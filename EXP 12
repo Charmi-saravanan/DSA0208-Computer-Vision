@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+img = cv2.imread("your_image.jpg")  # Replace with your image path
+if img is None:
+    raise IOError("Image not found or path incorrect.")
+
+pts_src = np.float32([
+    [100, 100],   # top-left
+    [400, 100],   # top-right
+    [100, 400],   # bottom-left
+    [400, 400]    # bottom-right
+])
+
+# These map the above points to a perfect rectangle
+pts_dst = np.float32([
+    [0, 0],
+    [300, 0],
+    [0, 300],
+    [300, 300]
+])
+
+matrix = cv2.getPerspectiveTransform(pts_src, pts_dst)
+
+# Output size should match destination rectangle
+warped = cv2.warpPerspective(img, matrix, (300, 300))
+
+cv2.imshow("Original Image", img)
+cv2.imshow("Perspective Transformed Image", warped)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
