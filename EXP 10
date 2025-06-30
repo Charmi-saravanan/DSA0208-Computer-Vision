@@ -1,0 +1,27 @@
+import cv2
+import numpy as np
+
+# Step 1: Load the image
+image = cv2.imread("your_image.jpg")  # Replace with your image file path
+
+if image is None:
+    raise IOError("Image not found or path is incorrect.")
+
+# Step 2: Define translation distances
+tx = 100   # Move 100 pixels to the right
+ty = 50    # Move 50 pixels down
+
+# Step 3: Create the translation matrix
+# 2x3 matrix: [[1, 0, tx], [0, 1, ty]]
+translation_matrix = np.float32([[1, 0, tx], [0, 1, ty]])
+
+# Step 4: Apply translation using warpAffine
+height, width = image.shape[:2]
+translated_image = cv2.warpAffine(image, translation_matrix, (width, height))
+
+# Step 5: Display images
+cv2.imshow("Original Image", image)
+cv2.imshow("Translated Image", translated_image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
