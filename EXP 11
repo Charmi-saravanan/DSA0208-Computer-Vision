@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+img = cv2.imread("your_image.jpg")           # <-- replace with your file path
+if img is None:
+    raise IOError("Cannot open image.")
+
+# (Choose any 3 points you like on the input image)
+pts_src = np.float32([
+    [50,  50],      # top‑left corner-ish
+    [200, 50],      # top‑right-ish
+    [50, 200]       # bottom‑left-ish
+])
+
+# (Where those same 3 points should land in the output image)
+pts_dst = np.float32([
+    [10,  100],     # move & shear a bit
+    [210,  10],     # also rotate
+    [100, 250]      # scale & skew
+])
+
+M = cv2.getAffineTransform(pts_src, pts_dst)  # 2×3 matrix
+
+(h, w) = img.shape[:2]
+affined = cv2.warpAffine(img, M, (w, h))
+
+cv2.imshow("Original", img)
+cv2.imshow("Affine Transform", affined)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+# To save: cv2.imwrite("affined_output.jpg", affined)
