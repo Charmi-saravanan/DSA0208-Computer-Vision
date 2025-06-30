@@ -1,0 +1,22 @@
+import cv2
+import numpy as np
+
+# Step 1: Load the image
+image = cv2.imread("your_image.jpg")  # Replace with your image path
+if image is None:
+    raise IOError("Image not found.")
+
+# Step 2: Convert to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Step 3: Apply Sobel operator along Y-axis (dy = 1, dx = 0)
+sobel_y = cv2.Sobel(gray, cv2.CV_64F, dx=0, dy=1, ksize=3)
+
+# Step 4: Convert the gradient to absolute scale and uint8
+sobel_y_abs = cv2.convertScaleAbs(sobel_y)
+
+# Step 5: Display the result
+cv2.imshow("Original Image", image)
+cv2.imshow("Sobel Y - Vertical Edges", sobel_y_abs)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
